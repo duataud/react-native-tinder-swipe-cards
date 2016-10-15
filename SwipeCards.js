@@ -2,6 +2,7 @@
 'use strict';
 
 import React, {Component} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {
     StyleSheet,
@@ -9,13 +10,19 @@ import {
     View,
     Animated,
     PanResponder,
-    Image
+    Image,
+    TouchableOpacity,
+    Dimensions
 } from 'react-native';
 
 import clamp from 'clamp';
 
 import Defaults from './Defaults.js';
-
+const {width, height, scale} = Dimensions.get("window"),
+    vw = width / 100,
+    vh = height / 100,
+    vmin = Math.min(vw, vh),
+    vmax = Math.max(vw, vh);
 var SWIPE_THRESHOLD = 120;
 
 // Base Styles. Use props to override these values
@@ -51,7 +58,31 @@ var styles = StyleSheet.create({
     nopeText: {
         fontSize: 16,
         color: 'red',
-    }
+    },
+    buttonIcon:{
+      fontSize: 35,
+      color: 'white'
+    },
+    buttonFooterContainer: {
+    flexDirection: 'row',
+    width: 90 * vw,
+    height: 10 * vh,
+    marginLeft: 5 * vmin,
+    marginRight: 5 * vmin,
+    justifyContent: 'space-around',
+    position: 'absolute',
+    bottom: 17 * vh,
+  },
+  buttonFooter: {
+    width: 15 * vh,
+    height: 15 * vh,
+    borderWidth: 1 * vmin,
+    borderRadius: 15 * vmin,
+    borderColor: '#F2F2F2',
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 });
 
 class SwipeCards extends Component {
@@ -79,7 +110,19 @@ class SwipeCards extends Component {
       card: card
     });
   }
+  _goToPreviousCard() {
+    let currentCardIdx = this.props.cards.indexOf(this.state.card);
+    let newIdx = currentCardIdx - 1;
 
+    // Checks to see if first card.
+    // If true, will start again from the first card.
+    let card = newIdx < 0
+      ? this.props.cards[0] : this.props.cards[newIdx];
+
+    this.setState({
+      card: card
+    });
+  }
   componentDidMount() {
     this._animateEntrance();
   }
@@ -148,14 +191,37 @@ class SwipeCards extends Component {
       }
     })
   }
-
+  _previousState() {
+    this.state.pan.setValue({x: 0, y: 0});
+    this.state.enter.setValue(0);
+    this._goToPreviousCard();
+    this._animateEntrance();
+  }
   _resetState() {
     this.state.pan.setValue({x: 0, y: 0});
     this.state.enter.setValue(0);
     this._goToNextCard();
     this._animateEntrance();
   }
+  _yupButton() {
+    this.props.handleYup(this.state.card);
+    this.props.cardRemoved
+      ? this.props.cardRemoved(this.props.cards.indexOf(this.state.card))
+      : null;
+    Animated.timing(this.state.pan, {
+      toValue: {x: 1000, y: 0},
+    }).start(this._resetState.bind(this));
+  }
 
+  _nopeButton() {
+    this.props.handleNope(this.state.card);
+    this.props.cardRemoved
+      ? this.props.cardRemoved(this.props.cards.indexOf(this.state.card))
+      : null;
+    Animated.timing(this.state.pan, {
+      toValue: {x: -1000, y: 0},
+    }).start(this._resetState.bind(this));
+  }
   renderNoMoreCards() {
     if (this.props.renderNoMoreCards)
       return this.props.renderNoMoreCards();
@@ -166,7 +232,7 @@ class SwipeCards extends Component {
   }
 
   renderCard(cardData) {
-    return this.props.renderCard(cardData)
+    return this.props.renderCard(cardData);
   }
 
   render() {
@@ -190,6 +256,10 @@ class SwipeCards extends Component {
 
         return (
             <View style={this.props.containerStyle}>
+              <View style={styles.buttonFooterContainer}>
+                <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#fb4f63'}]}><Icon name={'times'} style={[styles.buttonIcon]}/></TouchableOpacity>
+                <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#55dc5b'}]}><Icon name={'heart'} style={[styles.buttonIcon]}/></TouchableOpacity>
+              </View>
                 { this.state.card
                     ? (
                     <Animated.View style={[this.props.cardStyle, animatedCardstyles]} {...this._panResponder.panHandlers}>
