@@ -262,7 +262,7 @@ class SwipeCards extends Component {
                     <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#fb4f63'}]}><Icon name={'times'} style={[styles.buttonIcon]}/></TouchableOpacity>
                     <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#55dc5b'}]}><Icon name={'heart'} style={[styles.buttonIcon]}/></TouchableOpacity>
                   </View>
-                )
+                ) : null
               }
 
                 { this.state.card
