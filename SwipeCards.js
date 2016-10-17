@@ -256,10 +256,15 @@ class SwipeCards extends Component {
 
         return (
             <View style={this.props.containerStyle}>
-              <View style={styles.buttonFooterContainer}>
-                <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#fb4f63'}]}><Icon name={'times'} style={[styles.buttonIcon]}/></TouchableOpacity>
-                <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#55dc5b'}]}><Icon name={'heart'} style={[styles.buttonIcon]}/></TouchableOpacity>
-              </View>
+              { this.state.card ?
+                (
+                  <View style={styles.buttonFooterContainer}>
+                    <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#fb4f63'}]}><Icon name={'times'} style={[styles.buttonIcon]}/></TouchableOpacity>
+                    <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#55dc5b'}]}><Icon name={'heart'} style={[styles.buttonIcon]}/></TouchableOpacity>
+                  </View>
+                )
+              }
+
                 { this.state.card
                     ? (
                     <Animated.View style={[this.props.cardStyle, animatedCardstyles]} {...this._panResponder.panHandlers}>
