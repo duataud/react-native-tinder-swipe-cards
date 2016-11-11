@@ -259,8 +259,12 @@ class SwipeCards extends Component {
               { this.state.card ?
                 (
                   <View style={styles.buttonFooterContainer}>
-                    <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter]}><Image source={require('./nop.png')} style={styles.buttonIcon}/></TouchableOpacity>
-                    <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter]}><Image source={require('./yup.png')} style={styles.buttonIcon}/></TouchableOpacity>
+                    <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter]}>
+<Image source={require('../../src/img/nop.png')} style={styles.buttonIcon}/>
+</TouchableOpacity>
+                    <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter]}>
+<Image source={require('../../src/img/yup.png')} style={styles.buttonIcon}/>
+</TouchableOpacity>
                   </View>
                 ) : null
               }
@@ -343,4 +347,4 @@ SwipeCards.defaultProps = {
     nopeTextStyle: styles.nopeText
 };
 
-export default SwipeCards;
+export default SwipeCards
