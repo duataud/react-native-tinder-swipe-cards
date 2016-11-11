@@ -60,8 +60,8 @@ var styles = StyleSheet.create({
         color: 'red',
     },
     buttonIcon:{
-      fontSize: 35,
-      color: 'white'
+      width:80,
+    height:80
     },
     buttonFooterContainer: {
     flexDirection: 'row',
@@ -259,8 +259,8 @@ class SwipeCards extends Component {
               { this.state.card ?
                 (
                   <View style={styles.buttonFooterContainer}>
-                    <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#fb4f63'}]}><Icon name={'times'} style={[styles.buttonIcon]}/></TouchableOpacity>
-                    <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter,{backgroundColor:'#55dc5b'}]}><Icon name={'heart'} style={[styles.buttonIcon]}/></TouchableOpacity>
+                    <TouchableOpacity onPress={this._nopeButton.bind(this)} style={[styles.buttonFooter]}><Image source={require('./nop.png')} style={styles.buttonIcon}/></TouchableOpacity>
+                    <TouchableOpacity onPress={this._yupButton.bind(this)} style={[styles.buttonFooter]}><Image source={require('./yup.png')} style={styles.buttonIcon}/></TouchableOpacity>
                   </View>
                 ) : null
               }
@@ -343,4 +343,4 @@ SwipeCards.defaultProps = {
     nopeTextStyle: styles.nopeText
 };
 
-export default SwipeCards
+export default SwipeCards;
